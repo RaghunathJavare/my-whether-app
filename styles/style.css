@@ -2,10 +2,11 @@ html {
   font-size: 2rem;
 }
 
-body{
-  background-image: url('/photos/background-img.jpg');
+body {
+  background-image: url("/photos/bc-img-2.jpg");
   background-size: cover;
-  background-repeat: repeat-y;
+  background-repeat: no-repeat;
+  height: 100vh;
 }
 
 main {
@@ -13,7 +14,6 @@ main {
   padding: 0;
   font-weight: 500;
 }
-
 
 .whether-container {
   color: rgba(37, 48, 57, 0.788);
@@ -25,17 +25,13 @@ main {
   line-height: 200%;
 }
 
-
 /* media Query  */
 
-@media(max-width:500px){
-  
-.whether{
-  font-size: 2.5rem;
-}
-.text__sizer{
-  font-size: 1.5rem;
-}
-  
-
+@media (max-width: 500px) {
+  .whether {
+    font-size: 2.5rem;
+  }
+  .text__sizer {
+    font-size: 1.5rem;
+  }
 }
