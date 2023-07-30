@@ -1,12 +1,13 @@
 html {
-  font-size: 2rem;
+  font-size: 1.7rem;
 }
 
 body {
-  background-image: url("/photos/bc-img-2.jpg");
+  background-image: url("/photos/background-img-2.jpg");
   background-size: cover;
   background-repeat: no-repeat;
-  height: 100vh;
+  height: 120vh;
+  color: #241818;
 }
 
 main {
@@ -15,23 +16,39 @@ main {
   font-weight: 500;
 }
 
-.whether-container {
-  color: rgba(37, 48, 57, 0.788);
+.weather-content {
+  text-align: center;
 }
 
-.whether {
+.weather {
   font-size: 4rem;
   text-align: center;
   line-height: 200%;
 }
 
+.content-box {
+  padding-top: 16px;
+}
+
 /* media Query  */
 
 @media (max-width: 500px) {
-  .whether {
+  .weather-container {
+    font-size: 10px;
+  }
+  .weather {
     font-size: 2.5rem;
+    padding-bottom: 1rem;
   }
   .text__sizer {
     font-size: 1.5rem;
+  }
+  h5,
+  .weather-content {
+    font-size: 20px;
+  }
+
+  .content-box {
+    padding: 1rem;
   }
 }

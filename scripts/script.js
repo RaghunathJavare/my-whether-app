@@ -1,6 +1,6 @@
 "use strict";
 
-const whetherContaienr = document.querySelector(".app");
+const weatherContaienr = document.querySelector(".app");
 
 class getData {
   constructor(date, time) {
@@ -32,56 +32,107 @@ class getData {
 }
 
 class app {
-
   #whetherApiKey = "4df63278af2b102b563c9d0d9924e2e5";
+  #cityState;
+  #cityName = "taloda";
 
   constructor() {
     this.#getCurrentCoords();
   }
 
-  #getWhetherData(url) {
+  #ajaxCall(url) {
     return fetch(url).then((res) => {
       if (!res.ok) throw new Error("country not found!");
       return res.json();
     });
   }
 
+  // Get user current coords of user
   #getCurrentCoords() {
     new Promise(function (resolve, reject) {
       navigator.geolocation.getCurrentPosition(resolve, reject);
-    }).then((res) => this.#getPosition(res));
-  }
-  // Get user current location
-  #getPosition(data) {
-    const { latitude: lat, longitude: lng } = data.coords;
-    this.#getWhetherData(
-      `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lng}&appid=${
-        this.#whetherApiKey
-      }`
-    ).then((data) => this.#renderWhether(data));
+    }).then((data) => {
+      const { latitude: lat, longitude: lon } = data.coords;
+      this.#getPosition(lat, lon);
+    });
   }
 
-  #renderWhether(data) {
+  // get weather data
+
+  #getPosition(lat, lon) {
+    this.#ajaxCall(
+      `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${
+        this.#whetherApiKey
+      }&units=metric`
+    ).then((data) => {
+      this.#renderWeather(data);
+    });
+  }
+
+  // get current coords of city
+  #getCityCoords() {
+    this.#ajaxCall(
+      ` http://api.openweathermap.org/geo/1.0/direct?q=${
+        this.#cityName
+      },&limit=1&appid=${this.#whetherApiKey}`
+    ).then((data) => {
+      console.log(data);
+    });
+  }
+  //  render currnet weather data to UI
+
+  #renderWeather(data) {
     let timeDate = new getData();
-    console.log(data);
+    const { feels_like: feel, temp, temp_max: max, temp_min: min } = data.main;
     const html = `
-    <div class="container-fluid whether-container">
-    <h1 class="city-name text__sizer">${data.name}</h1>
+    <div class="container-fluid weather-container">
+    <h1 class="city-name text__sizer">${data.name},  
     <h4 class="current-date text__sizer">${timeDate.date}</h4>
     <h4 class="current-time text__sizer">${timeDate.time}</h4>
 </div>
 
-<!-- current whether  -->
+<!-- current weather  -->
 
-<div class="whether">
+<div class="weather">
     <i class="fa-solid fa-cloud-sun current-whether"></i>
-    <span class="current-whether">39°</span>
+    <span class="current-weather">${temp.toFixed(0)}C°</span>
+</div>
+
+<div class="container-fluid weather-content">
+<div class="row">
+    <div class="col-lg-3 col-6 content-box"><i class="fa-solid fa-cloud"></i>
+    <span>${feel.toFixed(1)}</span>
+        <h5>feels-like</h5>
+    </div>
+    <div class="col-lg-3 col-6 content-box">
+    <span>${data.wind.speed.toFixed(1)}</span>
+    <span class="material-symbols-outlined">
+air
+</span>
+        <h5>wind-speed</h5>
+    </div>
+    <div class="col-lg-3 col-6 content-box">
+    <span>${max.toFixed(1)}</span>
+    <span class="material-symbols-outlined">
+thermometer_gain
+</span>
+        <h5>max-temp</h5>
+    </div>
+    <div class="col-lg-3 col-6 content-box">
+    <span>${min.toFixed(1)}</span>
+
+    <span class="material-symbols-outlined">
+thermometer_loss
+</span>
+    
+        <h5>min-temp</h5>
+    </div>
+</div>
+
 </div>`;
 
-    whetherContaienr.insertAdjacentHTML("afterbegin", html);
+    weatherContaienr.insertAdjacentHTML("afterbegin", html);
   }
-
-  // Get city Data
 }
 
 const App = new app();
