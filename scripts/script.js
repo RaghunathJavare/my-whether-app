@@ -75,9 +75,12 @@ class app {
 
   // get current coords of city
   #getCityCoords(e) {
-    this.#cityName = userInput.value;
-    if (!this.#cityName) alert("please enter your city name");
     e.preventDefault();
+    this.#cityName = userInput.value;
+    if (!this.#cityName) {
+      alert("please enter your city name");
+      throw new Error("No data found");
+    }
     this.#ajaxCall(
       ` http://api.openweathermap.org/geo/1.0/direct?q=${
         this.#cityName
