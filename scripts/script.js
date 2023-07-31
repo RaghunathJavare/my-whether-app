@@ -1,6 +1,8 @@
 "use strict";
 
 const weatherContaienr = document.querySelector(".app");
+const userInput = document.querySelector(".city-name");
+const btn = document.querySelector(".btn");
 
 class getData {
   constructor(date, time) {
@@ -34,10 +36,12 @@ class getData {
 class app {
   #whetherApiKey = "4df63278af2b102b563c9d0d9924e2e5";
   #cityState;
-  #cityName = "taloda";
+  #cityName;
 
   constructor() {
     this.#getCurrentCoords();
+    btn.addEventListener("click", this.#getCityCoords.bind(this));
+    // this.#getCityCoords()
   }
 
   #ajaxCall(url) {
@@ -70,21 +74,32 @@ class app {
   }
 
   // get current coords of city
-  #getCityCoords() {
+  #getCityCoords(e) {
+    this.#cityName = userInput.value;
+    if (!this.#cityName) alert("please enter your city name");
+    e.preventDefault();
     this.#ajaxCall(
       ` http://api.openweathermap.org/geo/1.0/direct?q=${
         this.#cityName
       },&limit=1&appid=${this.#whetherApiKey}`
-    ).then((data) => {
-      console.log(data);
-    });
+    )
+      .then((data) => {
+        const { lat, lon } = data[0];
+        this.#getPosition(lat, lon);
+        weatherContaienr.innerHTML = userInput.value = "";
+      })
+      .catch((err) => {
+        throw new Error(`country not found ${err.massage}`);
+      });
   }
   //  render currnet weather data to UI
 
   #renderWeather(data) {
+    if (!data) return;
     let timeDate = new getData();
     const { feels_like: feel, temp, temp_max: max, temp_min: min } = data.main;
     const html = `
+  
     <div class="container-fluid weather-container">
     <h1 class="city-name text__sizer">${data.name},  
     <h4 class="current-date text__sizer">${timeDate.date}</h4>
