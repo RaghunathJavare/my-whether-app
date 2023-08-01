@@ -98,7 +98,7 @@ class app {
   //  render currnet weather data to UI
 
   #renderWeather(data) {
-    if (!data) return;
+    if (!data) redturn;
     let timeDate = new getData();
     const { feels_like: feel, temp, temp_max: max, temp_min: min } = data.main;
     const html = `
