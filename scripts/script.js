@@ -35,11 +35,10 @@ class getData {
 
 class app {
   #whetherApiKey = "4df63278af2b102b563c9d0d9924e2e5";
-  #cityState;
   #cityName;
 
   constructor() {
-    this.#getCurrentCoords();
+    // this.#getCurrentCoords();
     btn.addEventListener("click", this.#getCityCoords.bind(this));
     // this.#getCityCoords()
   }
@@ -52,14 +51,14 @@ class app {
   }
 
   // Get user current coords of user
-  #getCurrentCoords() {
-    new Promise(function (resolve, reject) {
-      navigator.geolocation.getCurrentPosition(resolve, reject);
-    }).then((data) => {
-      const { latitude: lat, longitude: lon } = data.coords;
-      this.#getPosition(lat, lon);
-    });
-  }
+  // #getCurrentCoords() {
+  //   new Promise(function (resolve, reject) {
+  //     navigator.geolocation.getCurrentPosition(resolve, reject);
+  //   }).then((data) => {
+  //     const { latitude: lat, longitude: lon } = data.coords;
+  //     this.#getPosition(lat, lon);
+  //   });
+  // }
 
   // get weather data
 
@@ -102,6 +101,7 @@ class app {
     let timeDate = new getData();
     const { feels_like: feel, temp, temp_max: max, temp_min: min } = data.main;
     const html = `
+   
   
     <div class="container-fluid weather-container">
     <h1 class="city-name text__sizer">${data.name},  
