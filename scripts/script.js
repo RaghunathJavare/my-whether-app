@@ -38,9 +38,8 @@ class app {
   #cityName;
 
   constructor() {
-    // this.#getCurrentCoords();
+    this.#getCurrentCoords();
     btn.addEventListener("click", this.#getCityCoords.bind(this));
-    // this.#getCityCoords()
   }
 
   #ajaxCall(url) {
@@ -51,14 +50,14 @@ class app {
   }
 
   // Get user current coords of user
-  // #getCurrentCoords() {
-  //   new Promise(function (resolve, reject) {
-  //     navigator.geolocation.getCurrentPosition(resolve, reject);
-  //   }).then((data) => {
-  //     const { latitude: lat, longitude: lon } = data.coords;
-  //     this.#getPosition(lat, lon);
-  //   });
-  // }
+  #getCurrentCoords() {
+    new Promise(function (resolve, reject) {
+      navigator.geolocation.getCurrentPosition(resolve, reject);
+    }).then((data) => {
+      const { latitude: lat, longitude: lon } = data.coords;
+      this.#getPosition(lat, lon);
+    });
+  }
 
   // get weather data
 
@@ -81,7 +80,7 @@ class app {
       throw new Error("No data found");
     }
     this.#ajaxCall(
-      ` http://api.openweathermap.org/geo/1.0/direct?q=${
+      ` https://api.openweathermap.org/geo/1.0/direct?q=${
         this.#cityName
       },&limit=1&appid=${this.#whetherApiKey}`
     )
