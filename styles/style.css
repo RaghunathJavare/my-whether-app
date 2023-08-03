@@ -49,9 +49,9 @@ main {
 
 @media (max-width: 1000px) {
   body{
-    height: 160vh;
+    background-repeat: repeat-y;
+  
   }
-
 }
 
 
