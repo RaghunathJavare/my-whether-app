@@ -33,6 +33,9 @@ class getData {
   }
 }
 
+
+
+
 class app {
   #whetherApiKey = "4df63278af2b102b563c9d0d9924e2e5";
   #city;
@@ -140,7 +143,7 @@ thermometer_loss
     this.#ajaxCall(
       ` https://api.openweathermap.org/geo/1.0/direct?q=${
         userInput.value
-      },&limit=1&appid=${this.#whetherApiKey}`1
+      },&limit=1&appid=${this.#whetherApiKey}`
     )
       .then((data) => {
         const { lat, lon } = data[0];

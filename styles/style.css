@@ -23,7 +23,7 @@ main {
 .logo {
   height: 50px;
   width: 50px;
-  animation: mymove 20s infinite;
+  animation: mymove 20s  infinite;
 }
 
 .weather {
@@ -36,16 +36,29 @@ main {
 .weather-content {
   text-align: center;
   font-size: 2rem;
-  margin-top: 4rem;
+  margin-top: 2rem;
 }
 
 .content-box {
   padding-top: 16px;
 }
 
+
+
 /* media Query  */
 
+@media (max-width: 1000px) {
+  body{
+    height: 160vh;
+  }
+
+}
+
+
 @media (max-width: 500px) {
+  body{
+    height: 130vh;
+  }
   .weather-container {
     font-size: 10px;
   }
