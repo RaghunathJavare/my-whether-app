@@ -2,7 +2,7 @@ body {
   background-image: url("/photos/background-img-2.jpg");
   background-size: cover;
   background-repeat: no-repeat;
-  height: 120vh;
+  min-height: 100vh;
   color: #241818;
 }
 
@@ -57,7 +57,7 @@ main {
 
 @media (max-width: 500px) {
   body{
-    height: 130vh;
+    min-height: 100vh;
   }
   .weather-container {
     font-size: 10px;

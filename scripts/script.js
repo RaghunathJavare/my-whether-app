@@ -33,10 +33,7 @@ class getData {
   }
 }
 
-
-
-
-class app {
+class App {
   #whetherApiKey = "4df63278af2b102b563c9d0d9924e2e5";
   #city;
 
@@ -45,33 +42,39 @@ class app {
     btn.addEventListener("click", this.#getCityCoords.bind(this));
   }
 
-  #ajaxCall(url) {
-    return fetch(url).then((res) => {
+  // Request for AJAX call
+  async #ajaxCall(url) {
+    try {
+      const res = await fetch(url);
+
       if (!res.ok) throw new Error("country not found!");
-      return res.json();
-    });
+
+      return await res.json();
+    } catch (err) {
+      console.error(err);
+    }
   }
 
   // Get user current coords of user
-  #getCurrentCoords() {
-    new Promise(function (resolve, reject) {
+  async #getCurrentCoords() {
+    // Get current user position by location
+    const data = await new Promise(function (resolve, reject) {
       navigator.geolocation.getCurrentPosition(resolve, reject);
-    }).then((data) => {
-      const { latitude: lat, longitude: lon } = data.coords;
-      this.#getPosition(lat, lon);
     });
+
+    const { latitude: lat, longitude: lon } = data.coords;
+    this.#getPosition(lat, lon);
   }
 
   // get weather data
 
-  #getPosition(lat, lon) {
-    this.#ajaxCall(
+  async #getPosition(lat, lon) {
+    const data = await this.#ajaxCall(
       `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${
         this.#whetherApiKey
       }&units=metric`
-    ).then((data) => {
-      this.#renderWeather(data);
-    });
+    );
+    this.#renderWeather(data);
   }
   //  render currnet weather data to UI
 
@@ -131,29 +134,29 @@ thermometer_loss
     weatherContaienr.insertAdjacentHTML("afterbegin", html);
   }
 
-  // get current coords of city
-  #getCityCoords(e) {
-    e.preventDefault();
-    this.#city = userInput.value;
+  async #getCityCoords(e) {
+    try {
+      e.preventDefault();
+      this.#city = userInput.value;
 
-    if (!this.#city) {
-      alert("please enter your city name");
-      throw new Error("No country found");
+      if (!this.#city) {
+        alert("please enter your city name");
+        throw new Error("No country found");
+      }
+
+      const data = await this.#ajaxCall(
+        ` https://api.openweathermap.org/geo/1.0/direct?q=${
+          userInput.value
+        },&limit=1&appid=${this.#whetherApiKey}`
+      );
+
+      const { lat, lon } = data[0];
+      this.#getPosition(lat, lon);
+      weatherContaienr.innerHTML = userInput.value = "";
+    } catch (err) {
+      console.error(`Country not found ${err.message}`);
     }
-    this.#ajaxCall(
-      ` https://api.openweathermap.org/geo/1.0/direct?q=${
-        userInput.value
-      },&limit=1&appid=${this.#whetherApiKey}`
-    )
-      .then((data) => {
-        const { lat, lon } = data[0];
-        this.#getPosition(lat, lon);
-        weatherContaienr.innerHTML = userInput.value = "";
-      })
-      .catch((err) => {
-        throw new Error(`country not found ${err.massage}`);
-      });
   }
 }
 
-const App = new app();
+const whetherApp = new App();
